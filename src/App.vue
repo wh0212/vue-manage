@@ -5,8 +5,6 @@
 </template>
 
 <style>
-body{
-  margin:0px;
-  padding: 0px;
-}
+@import "./assets/css/main.css";
+
 </style>
