@@ -1,14 +1,12 @@
 <template>
-  <div>
+  <div class="wrapper">
     <Hander />
-    <el-container>
-      <Sidebar />
-      <el-main>
-        <div>
-          <router-view></router-view>
-        </div>
-      </el-main>
-    </el-container>
+    <Sidebar />
+    <div class="content-box" :class="{'content-collapse':collapse}">
+      <div class="content">
+        <router-view></router-view>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -30,6 +28,40 @@ export default {
 
 
 <style scoped>
+.content-box {
+  position: absolute;
+  left: 250px;
+  right: 0;
+  top: 70px;
+  bottom: 0;
+  padding-bottom: 30px;
+  -webkit-transition: left 0.3s ease-in-out;
+  transition: left 0.3s ease-in-out;
+  background: #f0f0f0;
+}
+
+.content {
+  width: auto;
+  height: 100%;
+  padding: 10px;
+  overflow-y: scroll;
+  box-sizing: border-box;
+}
+
+.content-collapse {
+  left: 65px;
+}
+.wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.content {
+  width: 100%;
+  height: 400;
+  /* position: relative; */
+  /* border:1px red solid; */
+}
 .el-header,
 .el-footer {
   background-color: #b3c0d1;
