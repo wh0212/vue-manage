@@ -16,6 +16,8 @@
 </template>
 
 <script>
+// 导入全屏第三方模块
+import screenfull from "screenfull";
 export default {
   data() {
     return {
@@ -23,37 +25,70 @@ export default {
       fullscreen: false
     };
   },
+
   methods: {
     icon_un() {
       this.active = !this.active;
       this.$store.commit("activeIcon", this.active);
     },
     handleFullScreen() {
-      let element = document.documentElement;
-      if (this.fullscreen) {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitCancelFullScreen) {
-          document.webkitCancelFullScreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
-      } else {
-        if (element.requestFullscreen) {
-          element.requestFullscreen();
-        } else if (element.webkitRequestFullScreen) {
-          element.webkitRequestFullScreen();
-        } else if (element.mozRequestFullScreen) {
-          element.mozRequestFullScreen();
-        } else if (element.msRequestFullscreen) {
-          // IE11
-          element.msRequestFullscreen();
-        }
+      if (!screenfull.isEnabled) {
+        this.$message({
+          message: "您的浏览器无法进入全屏模式",
+          type: "warning"
+        });
+        return false;
       }
+      screenfull.toggle();
       this.fullscreen = !this.fullscreen;
+
+      // let element = document.documentElement;
+      // if (this.fullscreen) {
+      //   if (document.exitFullscreen) {
+      //     document.exitFullscreen();
+      //   } else if (document.webkitCancelFullScreen) {
+      //     document.webkitCancelFullScreen();
+      //   } else if (document.mozCancelFullScreen) {
+      //     document.mozCancelFullScreen();
+      //   } else if (document.msExitFullscreen) {
+      //     document.msExitFullscreen();
+      //   }
+      // } else {
+      //   if (element.requestFullscreen) {
+      //     element.requestFullscreen();
+      //   } else if (element.webkitRequestFullScreen) {
+      //     element.webkitRequestFullScreen();
+      //   } else if (element.mozRequestFullScreen) {
+      //     element.mozRequestFullScreen();
+      //   } else if (element.msRequestFullscreen) {
+      //     // IE11
+      //     element.msRequestFullscreen();
+      //   }
+      // }
+      // this.fullscreen = !this.fullscreen;
+    },
+    checkFull() {
+      var isFull =
+        document.mozFullScreen ||
+        document.fullScreen ||
+        //谷歌浏览器及Webkit内核浏览器
+        document.webkitIsFullScreen ||
+        document.webkitRequestFullScreen ||
+        document.mozRequestFullScreen ||
+        document.msFullscreenEnabled;
+      if (isFull === undefined) isFull = false;
+      //console.log("isFull："+isFull)
+      return isFull;
     }
+  },
+  mounted() {
+    window.onresize = () => {
+      // 全屏下监控是否按键了ESC
+      if (!this.checkFull()) {
+        // 全屏下按键esc后要执行的动作
+        this.fullscreen = false;
+      }
+    };
   }
 };
 </script>

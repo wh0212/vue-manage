@@ -10,30 +10,52 @@
       unique-opened
       router
     >
-      <el-menu-item index="dashboard">
-        <i class="el-icon-menu"></i>
-        <span slot="title">导航二</span>
-      </el-menu-item>
-      <el-menu-item index="2">
-        <i class="el-icon-document"></i>
-        <span slot="title">导航三</span>
-      </el-menu-item>
-      <el-menu-item index="3">
-        <i class="el-icon-setting"></i>
-        <span slot="title">导航四</span>
-      </el-menu-item>
+      <template v-for="item in menu_list">
+        <template v-if="item.subs">
+          <el-submenu :index="item.index" :key="item.index">
+            <template slot="title">
+              <i :class="item.icon"></i>
+              <span slot="title">{{ item.title }}</span>
+            </template>
+            <template v-for="subItem in item.subs">
+              <el-submenu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
+                <template slot="title">{{ subItem.title }}</template>
+                <el-menu-item
+                  v-for="(threeItem,i) in subItem.subs"
+                  :key="i"
+                  :index="threeItem.index"
+                >{{ threeItem.title }}</el-menu-item>
+              </el-submenu>
+              <el-menu-item v-else :index="subItem.index" :key="subItem.index">{{ subItem.title }}</el-menu-item>
+            </template>
+          </el-submenu>
+        </template>
+        <template v-else>
+          <el-menu-item :index="item.index" :key="item.index">
+            <i :class="item.icon"></i>
+            <span slot="title">{{ item.title }}</span>
+          </el-menu-item>
+        </template>
+      </template>
     </el-menu>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
-    return {};
+    return {
+      menu_list: []
+    };
+  },
+  mounted() {
+    axios.get("http://localhost:8080/menu_list.json").then(res => {
+      this.menu_list = res.data;
+    });
   },
   computed: {
     onRoutes() {
-
       return this.$route.path.replace("/", "");
     }
   }

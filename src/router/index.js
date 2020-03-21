@@ -20,6 +20,26 @@ const routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: () => import("../components/pages/dashboard.vue"),
+      },
+      {
+        path: '/from',
+        name: 'from',
+        component: () => import("../components/pages/from.vue"),
+      },
+      {
+        path: '/tab',
+        name: 'tab',
+        component: () => import("../components/pages/tab.vue"),
+      },
+      {
+        path: '/table',
+        name: 'table',
+        component: () => import("../components/pages/table.vue"),
+      },
+      {
+        path: '/icons',
+        name: 'icons',
+        component: () => import("../components/pages/icons.vue"),
       }
     ]
   },
