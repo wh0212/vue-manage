@@ -6,11 +6,36 @@
     </div>
     <div class="logo">wh后台管理系统</div>
     <div class="hander_right">
+      <!-- 全屏显示 -->
       <div class="btn-fullscreen" @click="handleFullScreen">
         <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
           <i class="el-icon-rank"></i>
         </el-tooltip>
       </div>
+      <!-- 消息 -->
+      <div class="btn-bell">
+        <el-tooltip effect="dark" :content="message?`有${message}条未读消息`:`消息中心`" placement="bottom">
+          <i class="el-icon-bell"></i>
+        </el-tooltip>
+        <span class="btn-bell-badge" v-if="message"></span>
+      </div>
+      <!-- 头像 -->
+      <div class="user-avator">
+        <img src="../../assets/img/img.jpg" />
+      </div>
+      <!-- 用户名下拉菜单 -->
+      <el-dropdown class="user-name" trigger="click" @command="handleCommand">
+        <span class="el-dropdown-link">
+          {{username}}
+          <i class="el-icon-caret-bottom"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <a href="https://github.com/wh0212/vue-manage" target="_blank">
+            <el-dropdown-item>项目仓库</el-dropdown-item>
+          </a>
+          <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </div>
 </template>
@@ -22,11 +47,25 @@ export default {
   data() {
     return {
       active: false,
-      fullscreen: false
+      fullscreen: false,
+      message: 2,
+      name: "wanghao"
     };
   },
-
+  computed: {
+    username() {
+      let username = localStorage.getItem("ms_username");
+      return username ? username : this.name;
+    }
+  },
   methods: {
+    // 用户名下拉菜单选择事件
+    handleCommand(command) {
+      if (command == "loginout") {
+        localStorage.removeItem("ms_username");
+        this.$router.push("/login");
+      }
+    },
     icon_un() {
       this.active = !this.active;
       this.$store.commit("activeIcon", this.active);
@@ -95,6 +134,53 @@ export default {
 
 
 <style lang="scss" scoped>
+.el-dropdown-link {
+    color: #fff;
+    cursor: pointer;
+}
+.el-dropdown-menu__item {
+    text-align: center;
+}
+.btn-bell .el-icon-bell {
+    color: #fff;
+}
+.user-name {
+    margin-left: 10px;
+}
+.user-name {
+  margin-left: 10px;
+}
+.user-avator {
+  margin-left: 20px;
+}
+.user-avator img {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.btn-bell,
+.btn-fullscreen {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  border-radius: 15px;
+  cursor: pointer;
+}
+.btn-bell-badge {
+  position: absolute;
+  right: 0;
+  top: -2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: #f56c6c;
+  color: #fff;
+}
+.btn-bell .el-icon-bell {
+  color: #fff;
+}
 .btn-fullscreen {
   position: relative;
   width: 30px;
