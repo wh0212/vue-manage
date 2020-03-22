@@ -20,26 +20,31 @@ const routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: () => import("../components/pages/dashboard.vue"),
+        meta: { title: '系统首页' }
       },
       {
         path: '/from',
         name: 'from',
         component: () => import("../components/pages/from.vue"),
+        meta: { title: '基本表单' }
       },
       {
         path: '/tab',
         name: 'tab',
         component: () => import("../components/pages/tab.vue"),
+        meta: { title: 'tab选项卡' }
       },
       {
         path: '/table',
         name: 'table',
         component: () => import("../components/pages/table.vue"),
+        meta: { title: '基础表格' }
       },
       {
         path: '/icons',
         name: 'icons',
         component: () => import("../components/pages/icons.vue"),
+        meta: { title: '自定义图标' }
       }
     ]
   },

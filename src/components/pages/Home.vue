@@ -4,6 +4,7 @@
     <div class="cont">
       <Sidebar />
       <div class="content-box" :class="{'content-collapse':$store.state.activeIcon}">
+        <Tag />
         <div class="content">
           <router-view></router-view>
         </div>
@@ -15,6 +16,7 @@
 <script>
 import Hander from "../common/Hander";
 import Sidebar from "../common/Sidebar";
+import Tag from "../common/tag";
 export default {
   data() {
     return {
@@ -23,12 +25,12 @@ export default {
   },
   components: {
     Hander,
-    Sidebar
+    Sidebar,
+    Tag
   }
 };
 </script>
 
 
 <style scoped>
-
 </style>
