@@ -6,9 +6,9 @@
     </div>
     <div class="logo">wh后台管理系统</div>
     <div class="hander_right">
-      <!-- 全屏显示 -->
-      <div class="btn-fullscreen" @click="handleFullScreen">
-        <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
+      <!-- 全屏显示  el-icon-rank    组件：el-tooltip  -->
+      <div @click="handlefullscreen" class="btn-fullscreen">
+        <el-tooltip effect="dark" :content="fullscreen?'取消全屏':'全屏'">
           <i class="el-icon-rank"></i>
         </el-tooltip>
       </div>
@@ -41,15 +41,14 @@
 </template>
 
 <script>
-// 导入全屏第三方模块
 import screenfull from "screenfull";
 export default {
   data() {
     return {
       active: false,
-      fullscreen: false,
       message: 2,
-      name: "wanghao"
+      name: "wanghao",
+      fullscreen: false
     };
   },
   computed: {
@@ -70,61 +69,37 @@ export default {
       this.active = !this.active;
       this.$store.commit("activeIcon", this.active);
     },
-    handleFullScreen() {
+    handlefullscreen() {
+      console.log(screenfull);
       if (!screenfull.isEnabled) {
         this.$message({
-          message: "您的浏览器无法进入全屏模式",
+          message: "您的浏览器不支持全屏",
           type: "warning"
         });
         return false;
       }
       screenfull.toggle();
       this.fullscreen = !this.fullscreen;
-
-      // let element = document.documentElement;
-      // if (this.fullscreen) {
-      //   if (document.exitFullscreen) {
-      //     document.exitFullscreen();
-      //   } else if (document.webkitCancelFullScreen) {
-      //     document.webkitCancelFullScreen();
-      //   } else if (document.mozCancelFullScreen) {
-      //     document.mozCancelFullScreen();
-      //   } else if (document.msExitFullscreen) {
-      //     document.msExitFullscreen();
-      //   }
-      // } else {
-      //   if (element.requestFullscreen) {
-      //     element.requestFullscreen();
-      //   } else if (element.webkitRequestFullScreen) {
-      //     element.webkitRequestFullScreen();
-      //   } else if (element.mozRequestFullScreen) {
-      //     element.mozRequestFullScreen();
-      //   } else if (element.msRequestFullscreen) {
-      //     // IE11
-      //     element.msRequestFullscreen();
-      //   }
-      // }
-      // this.fullscreen = !this.fullscreen;
     },
-    checkFull() {
-      var isFull =
+    //监听esc
+    checkfull() {
+      let isFull =
         document.mozFullScreen ||
-        document.fullScreen ||
-        //谷歌浏览器及Webkit内核浏览器
+        document.fullscreen ||
+        //谷歌浏览器，以及webkit内核的浏览器
         document.webkitIsFullScreen ||
         document.webkitRequestFullScreen ||
         document.mozRequestFullScreen ||
         document.msFullscreenEnabled;
       if (isFull === undefined) isFull = false;
-      //console.log("isFull："+isFull)
       return isFull;
     }
   },
   mounted() {
     window.onresize = () => {
-      // 全屏下监控是否按键了ESC
-      if (!this.checkFull()) {
-        // 全屏下按键esc后要执行的动作
+      //全屏下监控是否按下了esc
+      if (!this.checkfull()) {
+        //按下esc后要执行的操作
         this.fullscreen = false;
       }
     };
@@ -135,17 +110,17 @@ export default {
 
 <style lang="scss" scoped>
 .el-dropdown-link {
-    color: #fff;
-    cursor: pointer;
+  color: #fff;
+  cursor: pointer;
 }
 .el-dropdown-menu__item {
-    text-align: center;
+  text-align: center;
 }
 .btn-bell .el-icon-bell {
-    color: #fff;
+  color: #fff;
 }
 .user-name {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 .user-name {
   margin-left: 10px;
